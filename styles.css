@@ -84,6 +84,23 @@ body {
     font-weight: bold;
 }
 
+.calendar .current-date {
+    position: relative;
+}
+
+.calendar .current-date::after {
+    content: '';
+    position: absolute;
+    bottom: 16%;
+    left: 21%;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: 1px solid;
+    border-color: #FFBDC7;
+    border-radius: 50%;
+}
+
 #month {
     font-size: 32px;
     font-weight: bold;

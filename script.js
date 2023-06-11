@@ -44,54 +44,50 @@ function displayCurrentTime() {
 function displayCalendar() {
   var calendarElement = document.getElementById("calendar");
   var monthElement = document.getElementById("month");
-  var today = new Date();
-  var year = today.getFullYear();
-  var month = today.getMonth();
-  var daysInMonth = new Date(year, month + 1, 0).getDate();
-  var firstDayOfWeek = new Date(year, month, 1).getDay();
-  var weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var currentDate = new Date();
+  var month = currentDate.getMonth();
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
+  // カレンダーのHTMLを生成
   var calendarHTML = "<table>";
-  calendarHTML += "<tr>";
-  // 曜日をヘッダーとして表示
-  for (var i = 0; i < weekdays.length; i++) {
-    calendarHTML += "<th>" + weekdays[i] + "</th>";
-  }
-  calendarHTML += "</tr>";
 
-  var dayCount = 1;
-  var rowCount = Math.ceil((daysInMonth + firstDayOfWeek) / 7);
+  // カレンダーのヘッダー行
+  calendarHTML += "<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>";
 
-  // カレンダーの日付を表示
-  for (var row = 0; row < rowCount; row++) {
+  // カレンダーの日付部分
+  var firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  var lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  var startDate = new Date(firstDay);
+  startDate.setDate(firstDay.getDate() - firstDay.getDay()); // 前月分の日付を取得
+
+  var endDate = new Date(lastDay);
+  endDate.setDate(lastDay.getDate() + (6 - lastDay.getDay())); // 来月分の日付を取得
+
+  var currentDateMarker = new Date();
+
+  while (startDate <= endDate) {
     calendarHTML += "<tr>";
-    for (var col = 0; col < 7; col++) {
-      if (row === 0 && col < firstDayOfWeek) {
-        calendarHTML += "<td></td>";
-      } else if (dayCount > daysInMonth) {
-        break;
-      } else {
-        calendarHTML += "<td>" + dayCount + "</td>";
-        dayCount++;
+
+    for (var i = 0; i < 7; i++) {
+      var dateClass = "";
+      if (startDate.getMonth() === currentDate.getMonth() && startDate.getDate() === currentDate.getDate()) {
+        dateClass = "current-date"; // 今日の日付に適用するクラス
       }
+
+      calendarHTML += "<td class='" + dateClass + "'>" + startDate.getDate() + "</td>";
+      startDate.setDate(startDate.getDate() + 1);
     }
+
     calendarHTML += "</tr>";
   }
 
   calendarHTML += "</table>";
-  // カレンダーを表示
+
   calendarElement.innerHTML = calendarHTML;
 
   monthElement.textContent = months[month];
 }
 
-// 1秒ごとに現在時刻を更新
-setInterval(displayCurrentTime, 1000);
-
-// 初回の表示
-displayCurrentTime();
-displayCalendar();
 
 // Google Calendar APIのクライアントID
 var CLIENT_ID = '1031632072663-9il7ot960qb2abh7m75jdl3p5htpktoe.apps.googleusercontent.com';
@@ -158,13 +154,6 @@ function listUpcomingEvents() {
     eventsElement.innerHTML = eventsHTML;
   });
 }
-
-// 1秒ごとに現在時刻を更新
-setInterval(displayCurrentTime, 1000);
-
-// 初回の表示
-displayCurrentTime();
-displayCalendar();
 
 // Google Calendar APIのクライアントライブラリを非同期に読み込む
 (function () {
