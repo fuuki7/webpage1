@@ -88,90 +88,23 @@ function displayCalendar() {
   monthElement.textContent = months[month];
 }
 
-
-// Google Calendar APIのクライアントID
-var CLIENT_ID = '1031632072663-9il7ot960qb2abh7m75jdl3p5htpktoe.apps.googleusercontent.com';
-
-// APIキーを指定するときは以下のコメントを外して、APIキーを入力してください
-// var API_KEY = 'YOUR_API_KEY';
-
-// Google Calendar APIのスコープ
-var SCOPES = 'https://www.googleapis.com/auth/calendar.readonly';
-
-// 認証後のコールバック関数
-function handleClientLoad() {
-  gapi.load('client:auth2', initClient);
-}
-
-// Google Calendar APIクライアントの初期化
-function initClient() {
-  gapi.client.init({
-    apiKey: API_KEY,
-    clientId: CLIENT_ID,
-    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-    scope: SCOPES
-  }).then(function () {
-    // 認証状態を確認
-    if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      // ユーザー認証ダイアログを表示
-      gapi.auth2.getAuthInstance().signIn().then(function () {
-        // 認証成功後に予定を取得して表示
-        listUpcomingEvents();
-      });
-    } else {
-      // 認証済みの場合、予定を取得して表示
-      listUpcomingEvents();
-    }
-  });
-}
-
-// Google Calendar APIから予定を取得して表示
-function listUpcomingEvents() {
-  gapi.client.calendar.events.list({
-    'calendarId': 'primary',
-    'timeMin': (new Date()).toISOString(),
-    'maxResults': 5,
-    'orderBy': 'startTime',
-    'singleEvents': true
-  }).then(function (response) {
-    var events = response.result.items;
-
-    var eventsElement = document.getElementById("events");
-    var eventsHTML = "";
-
-    if (events.length > 0) {
-      eventsHTML += "<h2>Upcoming Events:</h2>";
-
-      for (var i = 0; i < events.length; i++) {
-        var event = events[i];
-        var start = event.start.dateTime || event.start.date;
-        eventsHTML += "<p>" + event.summary + " - " + start + "</p>";
-      }
-    } else {
-      eventsHTML += "<p>No upcoming events found.</p>";
-    }
-
-    eventsElement.innerHTML = eventsHTML;
-  });
-}
-
-// Google Calendar APIのクライアントライブラリを非同期に読み込む
-(function () {
-  var script = document.createElement('script');
-  script.src = 'https://apis.google.com/js/api.js';
-  script.onload = handleClientLoad;
-  document.body.appendChild(script);
-})();
-
-// 先程のコードに以下を追加します
-/*
 // OpenWeatherMap APIのAPIキー
 var API_KEY = 'abf45a6326ace821efb1c5dd7e7bb186';
+
+function formatDate(date) {
+  const options = {
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    hour12: true,
+  };
+  return date.toLocaleString('jp', options);
+}
 
 // 1週間の天気予報を取得して表示
 function getWeatherForecast() {
   var forecastElement = document.getElementById("weather-forecast");
-  var forecastHTML = "<h2>Weather Forecast:</h2>";
+  var forecastHTML = "<h3>Weather Forecast:</h3>";
 
   var apiUrl = "https://api.openweathermap.org/data/2.5/forecast?q=Hitachinaka,JP&units=metric&appid=" + API_KEY;
 
@@ -183,12 +116,11 @@ function getWeatherForecast() {
       for (var i = 0; i < forecasts.length; i++) {
         var forecast = forecasts[i];
         var dateTime = new Date(forecast.dt * 1000);
-        var date = dateTime.toLocaleDateString();
-        var time = dateTime.toLocaleTimeString();
+        var date = formatDate(dateTime);
         var temperature = forecast.main.temp;
         var description = forecast.weather[0].description;
 
-        forecastHTML += "<p>" + date + " " + time + " - " + temperature + "°C, " + description + "</p>";
+        forecastHTML += "<p>" + date + " " + temperature + "°C, " + description + "</p>";
       }
 
       forecastElement.innerHTML = forecastHTML;
@@ -199,12 +131,11 @@ function getWeatherForecast() {
     });
 }
 
-*/
-
 // 1秒ごとに現在時刻を更新
 setInterval(displayCurrentTime, 1000);
+setInterval(getWeatherForecast, 1800000);
 
 // 初回の表示
 displayCurrentTime();
 displayCalendar();
-//getWeatherForecast();
+getWeatherForecast();
