@@ -43,12 +43,14 @@ function displayCurrentTime() {
 // カレンダーを表示する関数
 function displayCalendar() {
   var calendarElement = document.getElementById("calendar");
+  var monthElement = document.getElementById("month");
   var today = new Date();
   var year = today.getFullYear();
   var month = today.getMonth();
   var daysInMonth = new Date(year, month + 1, 0).getDate();
   var firstDayOfWeek = new Date(year, month, 1).getDay();
   var weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
   var calendarHTML = "<table>";
   calendarHTML += "<tr>";
@@ -80,6 +82,8 @@ function displayCalendar() {
   calendarHTML += "</table>";
   // カレンダーを表示
   calendarElement.innerHTML = calendarHTML;
+
+  monthElement.textContent = months[month];
 }
 
 // 1秒ごとに現在時刻を更新

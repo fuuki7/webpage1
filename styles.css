@@ -19,7 +19,7 @@ body {
 .square1 {
     grid-column: 1/3;
     grid-row: 1/6;
-    padding: 20px;
+    padding: 15px 20px 0 20px;
     text-align: center;
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -59,13 +59,60 @@ body {
 }
 
 .square2 {
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     grid-column: 3/4;
     grid-row: 1/3;
-    padding: 20px;
+    padding: 10px;
+    text-align: center;
+    color: #FFBDC7;
+}
+
+.calendar {
+    font-size: 18px;
+}
+
+.monthShow {
+    margin: 15px;
+}
+
+.calendar th,
+.calendar td {
+    padding: 0.5em;
+}
+
+.calendar th {
+    font-weight: bold;
+}
+
+#month {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+
+.events,
+.weather-forecast {
+    font-size: 24px;
+    color: #333;
     text-align: center;
 }
 
+.events {
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.weather-forecast {
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+}
 .square3 {
     background-color: #f0f0f0;
     grid-column: 4/6;
@@ -96,67 +143,4 @@ body {
     grid-row: 3/6;
     padding: 20px;
     text-align: center;
-}
-
-.calendar,
-.events,
-.weather-forecast {
-    font-size: 24px;
-    color: #333;
-    text-align: center;
-}
-
-
-.date {
-    top: calc(50% + 1.5em);
-}
-
-.weekday {
-    top: calc(50% + 3em);
-}
-
-.weather {
-    top: calc(100% - 5em);
-}
-
-.calendar {
-    margin-top: 2em;
-    width: 100%;
-    text-align: center;
-    font-size: 20px;
-}
-
-.calendar th,
-.calendar td {
-    padding: 0.5em;
-}
-
-.calendar th {
-    font-weight: bold;
-}
-
-.calendar td {
-    border: 1px solid #333;
-}
-
-#month {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 0.5em;
-}
-
-.events {
-    font-size: 20px;
-    color: #333;
-    text-align: center;
-    width: 100%;
-    white-space: nowrap;
-}
-
-.weather-forecast {
-    font-size: 20px;
-    color: #333;
-    text-align: center;
-    width: 100%;
-    white-space: nowrap;
 }
